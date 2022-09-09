@@ -1,5 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
+import { GetStaticProps } from "next";
 import Head from "next/head";
+import Prismic from "@prismicio/client";
+import { getPrismicCliente } from "../../services/prismic";
 import styles from "./styles.module.scss";
 
 export default function Posts() {
@@ -60,3 +63,19 @@ export default function Posts() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicCliente();
+  const response = await prismic.query(
+    [Prismic.predicates.at("document.type", "post")],
+    {
+      fetch: ["post.title", "post.content"],
+      pageSize: 100,
+    }
+  );
+  console.log(response);
+
+  return {
+    props: {},
+  };
+};
