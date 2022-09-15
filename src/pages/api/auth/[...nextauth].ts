@@ -29,7 +29,8 @@ export default NextAuth({
                   "ref",
                   q.Get(
                     q.Match(
-                      q.Index("user_by_email", q.Casefold(session.user.email))
+                      q.Index("user_by_email"),
+                      q.Casefold(session.user.email)
                     )
                   )
                 )
