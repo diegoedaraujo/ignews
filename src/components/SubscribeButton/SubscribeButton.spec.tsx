@@ -10,20 +10,19 @@ jest.mock('next/router')
 describe('SubscribeButton component', () => {
     it('renders correctly', () => {
         const useSessionMocked = mocked(useSession)
-        useSessionMocked.mockResolvedValueOnce([null, false])
+        useSessionMocked.mockReturnValueOnce([null, false])
         render(<SubscribeButton /> )
 
         expect(screen.getByText('Subscribe now')).toBeInTheDocument()
     })
 
     it('redirects user to sign in when not authenticated', () => {
-        const useSessionMocked = mocked(useSession)
-        useSessionMocked.mockResolvedValueOnce([null, false])
         const signInMocked = mocked(signIn)
+        const useSessionMocked = mocked(useSession)
+        useSessionMocked.mockReturnValueOnce([null, false])
         render(<SubscribeButton />)
 
         const subscribeButton = screen.getByText('Subscribe now')
-
         fireEvent.click(subscribeButton)
         expect(signInMocked).toBeCalled()
     })
@@ -48,9 +47,8 @@ describe('SubscribeButton component', () => {
         } as any)
 
         render(<SubscribeButton />)
-        const subscribeButton = screen.getByText('Subscribe now')
-        
+        const subscribeButton = screen.getByText('Subscribe now')        
         fireEvent.click(subscribeButton)
-        expect(pushMock).toHaveBeenCalled()
+        expect(pushMock).toHaveBeenCalledWith('/posts')
     })
 })
